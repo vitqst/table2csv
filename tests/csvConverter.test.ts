@@ -45,4 +45,23 @@ describe("CsvConverter", () => {
     const expectedCsv = `"Name","Contact","Contact"\n"Name","Email","Phone"\n"John Doe","john.doe@example.com","123-456-7890"`;
     expect(csv).toBe(expectedCsv);
   });
+
+  it("should handle commas within cells correctly", () => {
+    document.body.innerHTML = `
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+        </tr>
+        <tr>
+          <td>John Doe</td>
+          <td>123 Main St, Anytown, USA</td>
+        </tr>
+      </table>
+    `;
+    const table = document.querySelector("table");
+    const csv = CsvConverter.convert(table!.outerHTML);
+    const expectedCsv = `"Name","Address"\n"John Doe","123 Main St, Anytown, USA"`;
+    expect(csv).toBe(expectedCsv);
+  });
 });
